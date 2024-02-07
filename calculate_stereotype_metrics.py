@@ -241,8 +241,8 @@ if __name__ == '__main__':
         content = json.loads(f.read())
 
     # Get the recommendation files
-    # rec_models_goodreads = get_recommender_models('path/to/goodreads/recommendations/*.tsv')
-    # rec_models_movielens = get_recommender_models('path/to/movielens/recommendations/*.tsv')
+    # rec_models_goodreads = get_recommender_models('input_recommendations/goodreads/*.tsv')
+    # rec_models_movielens = get_recommender_models('input_recommendations/movielens/*.tsv')
     rec_models_goodreads = get_recommender_models('C:\\Users\\murta\\OneDrive - Delft University of Technology\\Thesis-2023\\Experiments/Results/goodreads/recs/*.tsv')
     rec_models_movielens = get_recommender_models('C:\\Users\\murta\\OneDrive - Delft University of Technology\\Thesis-2023\\Experiments/Results/movielens/children/sideinfo/fold0/*.tsv')
 
