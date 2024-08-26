@@ -145,11 +145,11 @@ def plot_prominence(metric_df, metric_name):
 
 
 columns_goodreads = ["MostPop", "Random", "ItemKNN", "UserKNN", "BPRMF", "FunkSVD", "MF", "PMF",
-                     "PureSVD", "Slim", "ConvMF", "DeepFM", "NeuMF", "MultiVAE", "AMF"]
+                     "PureSVD", "Slim", "DeepFM", "NeuMF", "MultiVAE"]
 
-columns_ml = ["MostPop", "Random", "ItemKNN", "UserKNN", "AttributeItemKNN", "AttributeUserKNN", "BPRMF", "FunkSVD",
-              "MF", "MF2020", "PMF",
-              "PureSVD", "Slim", "ConvMF", "DeepFM", "NeuMF", "MultiVAE", "AMF", "VSM"]
+columns_ml = ["MostPop", "Random", "ItemKNN", "UserKNN", "BPRMF", "FunkSVD",
+              "MF", "PMF",
+              "PureSVD", "Slim", "DeepFM", "NeuMF", "MultiVAE", "VSM"]
 
 # Define gradients for each type of recommender
 blues = sns.color_palette("mako", n_colors=10)  # For Non-Personalized

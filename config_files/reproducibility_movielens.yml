@@ -1,236 +1,164 @@
   dataset: movielens_1m_final_sideinfo
   data_config:
-#    strategy: dataset
-#    dataset_path: ../Datasets/ratings.tsv
-    strategy: hierarchy
-    root_folder: ../data/movielens_1m_reproducability/splitting/
+   strategy: dataset
+   dataset_path: ../Datasets/ratings.tsv
     side_information:
       - dataloader: ChainedKG
         map: ../data/cat_dbpedia_movielens_1m_v030/map.tsv
         features: ../data/cat_dbpedia_movielens_1m_v030/features.tsv
         properties: ../data/cat_dbpedia_movielens_1m_v030/properties.conf
-#  prefiltering:
-#    - strategy: global_threshold
-#      threshold: 4
-#    - strategy: iterative_k_core
-#      core: 10
+ prefiltering:
+   - strategy: global_threshold
+     threshold: 4
+   - strategy: iterative_k_core
+     core: 10
   binarize: True
-#  splitting:
-#    save_on_disk: True
-#    save_folder: ../data/movielens_1m_reproducability_3plus/splitting/
-#    test_splitting:
-#      test_ratio: 0.2
-#      strategy: random_subsampling
-#      folds: 5
+ splitting:
+   save_on_disk: True
+   save_folder: ../data/movielens_1m_reproducability_3plus/splitting/
+   test_splitting:
+     test_ratio: 0.2
+     strategy: random_subsampling
   top_k: 50
   evaluation:
     cutoffs: [10]
     paired_ttest: True
-    wilcoxon_test: True
-    simple_metrics: [nDCG, MRR, MAP, HR, Recall, Precision]
+
+    simple_metrics: [nDCG, MRR, MAP]
   gpu: 1
   external_models_path: ../../elliot/external/models/__init__.py
   models:
-#    AttributeItemKNN:
-#      meta:
+   MF:
+     meta:
+#        hyper_max_evals: 10
+#        hyper_opt_alg: grid
+       validation_rate: 1
+       verbose: False
+       save_recs: True
+     batch_size: 1024 #[256, 512, 1024]
+     epochs: 50
+     factors: 32 #[ 8, 16, 32 ]
+     lr: 0.00031049056210450196 #[loguniform, -11.512925464970229, 0]
+     reg: 0.006553714226520847 #[loguniform, -11.512925464970229, -2.30258509299]
+     m: 8 #[4,6,8]
+   PureSVD:
+     meta:
 #        hyper_max_evals: 20
 #        hyper_opt_alg: tpe
-#        save_recs: True
-#      implicit: [True, False]
-#      neighbors: [uniform, 50, 1000] # 618
-#      similarity: [cosine, dot, braycurtis, euclidean, chebyshev] # dot
-#      loader: ChainedKG
-#    AttributeUserKNN:
-#      meta:
+       verbose: False
+       save_recs: True
+     factors: 22 #[quniform, 10, 100, 1]
+     seed: 42
+   FunkSVD:
+     meta:
 #        hyper_max_evals: 20
 #        hyper_opt_alg: tpe
-#        save_recs: True
-#      implicit: [True, False]
-#      neighbors: [uniform, 50, 1000] # 529
-#      similarity: [cosine, dot, braycurtis, euclidean, chebyshev] # braycurtis
-#      loader: ChainedKG
-#    MF:
-#      meta:
-##        hyper_max_evals: 10
-##        hyper_opt_alg: grid
-#        validation_rate: 1
-#        verbose: False
-#        save_recs: True
-#      batch_size: 1024 #[256, 512, 1024]
-#      epochs: 50
-#      factors: 32 #[ 8, 16, 32 ]
-#      lr: 0.00031049056210450196 #[loguniform, -11.512925464970229, 0]
-#      reg: 0.006553714226520847 #[loguniform, -11.512925464970229, -2.30258509299]
-#      m: 8 #[4,6,8]
-#    PureSVD:
-#      meta:
-##        hyper_max_evals: 20
-##        hyper_opt_alg: tpe
-#        verbose: False
-#        save_recs: True
-#      factors: 22 #[quniform, 10, 100, 1]
-#      seed: 42
-#    FunkSVD:
-#      meta:
-##        hyper_max_evals: 20
-##        hyper_opt_alg: tpe
-#        verbose: False
-#        save_recs: True
-#      epochs: 50
-#      batch_size: 1024
-#      factors: 91 #[quniform, 10, 100, 1]
-#      lr: 0.00012133279517930688 # [loguniform, -11.512925464970229, 0]
-#      reg_w: 0.1 #[loguniform, -11.512925464970229, -2.30258509299]
-#      reg_b: 0.001 #[loguniform, -11.512925464970229, -2.30258509299]
-#    PMF:
-#      meta:
-#        verbose: False
-#        save_recs: True
-#      epochs: 50
-#      batch_size: 256
-#      factors: 98
-#      lr: 0.00035306871380963445
-#      reg: 0.0025
-#      gaussian_variance: 0.1
-#    Random:
-#      meta:
-#        save_recs: True
-#    MostPop:
-#      meta:
-#        verbose: False
-#        save_recs: True
-#    UserKNN:
-#      meta:
-##        hyper_max_evals: 20
-##        hyper_opt_alg: tpe
-#        save_recs: True
-#        verbose: False
-#      neighbors: 291.6977182300739 #[ uniform, 5, 1000 ]
-#      similarity: cosine
-#    ItemKNN:
-#      meta:
-#        save_recs: True
-#        verbose: False
-##        hyper_max_evals: 20
-##        hyper_opt_alg: tpe
-#      neighbors: 200.12548796703226 #[uniform, 5, 1000]
-#      similarity: cosine
-#    Slim:
-#      meta:
-##        hyper_max_evals: 20
-##        hyper_opt_alg: tpe
-#        verbose: False
-#        save_recs: True
-#      l1_ratio: 0.0017297279372883675 #[loguniform, -11.512925464970229, 0]
-#      alpha: 0.23343180634177108 #[uniform, 10e-3, 1]
-#      neighborhood: 542 #[quniform, 5, 1000, 1]
-    MF2020:
-      meta:
-        verbose: False
-        save_recs: True
-      epochs: 256
-      factors: 32
-      lr: 0.002
-      reg: 0.005
-      m: 8
-      random_seed: 42
-#    BPRMF:
-#      meta:
-##        hyper_max_evals: 20
-##        hyper_opt_alg: tpe
-#        verbose: False
-#        save_recs: True
-#      lr: 0.0378936 #[loguniform, -11.512925464970229, 0]
-#      batch_size: 256 #[128, 256, 512]
-#      epochs: 73 #[quniform, 30, 100, 1]
-#      bias_regularization: 0
-#      user_regularization: 0.0157839 #[loguniform, -11.512925464970229, -2.30258509299]
-#      positive_item_regularization: 0.0005651 #[loguniform, -11.512925464970229, -2.30258509299]
-#      negative_item_regularization: 0.0012779 #[loguniform, -11.512925464970229, -2.30258509299]
-#      factors: 256 #[8, 16, 32, 64, 128, 256]
-#    NeuMF:
-#      meta:
-#        verbose: False
-#        save_recs: True
-#        validation_rate: 1
-#      mf_factors: 16
-#      dropout: 0
-#      is_mf_train: True
-#      is_mlp_train: True
-#      batch_size: 256
-#      epochs: 20
-#      lr: 0.001
-#      m: 4
-#    MultiVAE: # from original paper
-#      meta:
-##        hyper_max_evals: 50
-##        hyper_opt_alg: grid
-#        save_recs: True
-#      lr: 0.001 # exploration taken from TOIS
-#      epochs: 15
-#      batch_size: 128 #[64, 128, 512]
-#      intermediate_dim: 600
-#      latent_dim: 200
-#      dropout_pkeep: 0.5
-#      reg_lambda: 0 # exploration taken from TOIS
-#    AMF:
-#      meta:
-#        save_recs: True
-##        hyper_max_evals: 5
-##        hyper_opt_alg: tpe
-#        eval_perturbations: True
-#        validation_rate: 1
-#        verbose: False
-#      epochs: 20
-#      batch_size: 1024
-#      factors: 15 # [quniform, 8, 32, 1]
-#      lr: 0.001 #[0.01, 0.001, 0.0001]
-#      l_w: 0.0001
-#      l_b: 0.0001
-#      eps: 0.5 # [uniform, 0.1, 0.5] # Magnitude of the Perturbation
-#      l_adv: 1 # Adversarial Regularization Parameters
-#      adversarial_epochs: 20 #[quniform, 4, 8, 1] # Number of final epochs to be run [APR starts from (epochs - adversarial_epochs) epoch]
-#      eps_iter: 0.00001 #0.0625 # 2.5 * e-test / num_steps (Iterative Perturbations)
-#      nb_iter: 20
-##      early_stopping:
-##        patience: 5 # int
-##        monitor: nDCG@10
-##        mode: auto
-##        verbose: True
-##        min_delta: 0.001
-#    ConvMF:
-#      epochs: 50
-#      batch_size: 256 
-#      embedding_size: 64
-#      lr: 0.001
-#      l_w: 0.0001 #[0.0001, 0.001, 0.0005,  0.1]
-#      l_b: 0.001 #[0.01, 0.001,0.0001, 0.00001]
-#      cnn_channels: (1, 32, 32)
-#      cnn_kernels: (2,2)
-#      cnn_strides: (2,2)
-#      dropout_prob: 0.3
-#      meta:
-#        verbose: False
-##          hyper_max_evals: 10
-##          hyper_opt_alg: grid
-#        save_recs: True
-#    DeepFM:
-#      meta:
-#        save_recs: True
-#        verbose: False
-##          hyper_max_evals: 10
-##          hyper_opt_alg: grid
-#      epochs: 50
-#      batch_size: 1024
-#      factors: 100
-#      lr: 0.001
-#      l_w: 0.001 #[0.0001, 0.001, 0.0005,  0.1]
-#      hidden_neurons: (64,32)
-#      hidden_activations: ('relu','relu')
-#    VSM:
-#      meta:
-#        save_recs: True
-#      similarity: [cosine, correlation]
-#      user_profile: [tfidf, binary]
-#      item_profile: [tfidf, binary]
-#      loader: ChainedKG
+       verbose: False
+       save_recs: True
+     epochs: 50
+     batch_size: 1024
+     factors: 91 #[quniform, 10, 100, 1]
+     lr: 0.00012133279517930688 # [loguniform, -11.512925464970229, 0]
+     reg_w: 0.1 #[loguniform, -11.512925464970229, -2.30258509299]
+     reg_b: 0.001 #[loguniform, -11.512925464970229, -2.30258509299]
+   PMF:
+     meta:
+       verbose: False
+       save_recs: True
+     epochs: 50
+     batch_size: 256
+     factors: 98
+     lr: 0.00035306871380963445
+     reg: 0.0025
+     gaussian_variance: 0.1
+   Random:
+     meta:
+       save_recs: True
+   MostPop:
+     meta:
+       verbose: False
+       save_recs: True
+   UserKNN:
+     meta:
+#        hyper_max_evals: 20
+#        hyper_opt_alg: tpe
+       save_recs: True
+       verbose: False
+     neighbors: 291.6977182300739 #[ uniform, 5, 1000 ]
+     similarity: cosine
+   ItemKNN:
+     meta:
+       save_recs: True
+       verbose: False
+#        hyper_max_evals: 20
+#        hyper_opt_alg: tpe
+     neighbors: 200.12548796703226 #[uniform, 5, 1000]
+     similarity: cosine
+   Slim:
+     meta:
+#        hyper_max_evals: 20
+#        hyper_opt_alg: tpe
+       verbose: False
+       save_recs: True
+     l1_ratio: 0.0017297279372883675 #[loguniform, -11.512925464970229, 0]
+     alpha: 0.23343180634177108 #[uniform, 10e-3, 1]
+     neighborhood: 542 #[quniform, 5, 1000, 1]
+   BPRMF:
+     meta:
+#        hyper_max_evals: 20
+#        hyper_opt_alg: tpe
+       verbose: False
+       save_recs: True
+     lr: 0.0378936 #[loguniform, -11.512925464970229, 0]
+     batch_size: 256 #[128, 256, 512]
+     epochs: 73 #[quniform, 30, 100, 1]
+     bias_regularization: 0
+     user_regularization: 0.0157839 #[loguniform, -11.512925464970229, -2.30258509299]
+     positive_item_regularization: 0.0005651 #[loguniform, -11.512925464970229, -2.30258509299]
+     negative_item_regularization: 0.0012779 #[loguniform, -11.512925464970229, -2.30258509299]
+     factors: 256 #[8, 16, 32, 64, 128, 256]
+   NeuMF:
+     meta:
+       verbose: False
+       save_recs: True
+       validation_rate: 1
+     mf_factors: 16
+     dropout: 0
+     is_mf_train: True
+     is_mlp_train: True
+     batch_size: 256
+     epochs: 20
+     lr: 0.001
+     m: 4
+   MultiVAE: # from original paper
+     meta:
+#        hyper_max_evals: 50
+#        hyper_opt_alg: grid
+       save_recs: True
+     lr: 0.001 # exploration taken from TOIS
+     epochs: 15
+     batch_size: 128 #[64, 128, 512]
+     intermediate_dim: 600
+     latent_dim: 200
+     dropout_pkeep: 0.5
+     reg_lambda: 0 # exploration taken from TOIS
+   DeepFM:
+     meta:
+       save_recs: True
+       verbose: False
+#          hyper_max_evals: 10
+#          hyper_opt_alg: grid
+     epochs: 50
+     batch_size: 1024
+     factors: 100
+     lr: 0.001
+     l_w: 0.001 #[0.0001, 0.001, 0.0005,  0.1]
+     hidden_neurons: (64,32)
+     hidden_activations: ('relu','relu')
+   VSM:
+     meta:
+       save_recs: True
+     similarity: [cosine, correlation]
+     user_profile: [tfidf, binary]
+     item_profile: [tfidf, binary]
+     loader: ChainedKG

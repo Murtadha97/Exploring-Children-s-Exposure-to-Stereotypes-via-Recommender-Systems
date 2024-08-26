@@ -25,7 +25,7 @@ def write_model_labels(name, df):
     """
         This method writes a json object with the name of the model as the key
         and as a value a dictionary with MovieIDs as keys and values the label of the stereotype
-        name is the name of the model in following format: dataset-name_model-name
+        name is the name of the model in following format: dataset-name_model-name_stereotype
         df is a dataframe consisting of 2 columns: ItemID and Stereotype Label
     """
     df_to_dict = dict(zip(df.iloc[:, 0], df.iloc[:, 1]))
@@ -56,6 +56,23 @@ def write_model_labels(name, df):
     except Exception as e:
         print(e)
 
-
+import pandas as pd
 if __name__ == '__main__':
-    print("hi")
+    write_model_labels("movielens-1m_biasmeter_gender", pd.read_csv("results/movielens-1m_biasmeter_gender.csv", sep=','))
+    write_model_labels("movielens-1m_biasmeter_race", pd.read_csv("results/movielens-1m_biasmeter_race.csv", sep=','))
+    write_model_labels("movielens-1m_biasmeter_religion", pd.read_csv("results/movielens-1m_biasmeter_religion.csv", sep=','))
+    write_model_labels("movielens-1m_gpt_gender", pd.read_csv("results/movielens-1m_gpt_gender.csv", sep=','))
+    write_model_labels("movielens-1m_gpt_race", pd.read_csv("results/movielens-1m_gpt_gender.csv", sep=','))
+    write_model_labels("movielens-1m_gpt_religion", pd.read_csv("results/movielens-1m_gpt_religion.csv", sep=','))
+    write_model_labels("movielens-1m_ngim_gender", pd.read_csv("results/movielens-1m_ngim_gender.csv", sep=','))
+    write_model_labels("goodreads_biasmeter_gender", pd.read_csv("results/goodreads_biasmeter_gender.csv", sep=','))
+    write_model_labels("goodreads_biasmeter_race", pd.read_csv("results/goodreads_biasmeter_race.csv", sep=','))
+    write_model_labels("goodreads_biasmeter_religion", pd.read_csv("results/goodreads_biasmeter_religion.csv", sep=','))
+    write_model_labels("goodreads_gpt_gender", pd.read_csv("results/goodreads_gpt_gender.csv", sep=','))
+    write_model_labels("goodreads_gpt_race", pd.read_csv("results/goodreads_gpt_gender.csv", sep=','))
+    write_model_labels("goodreads_gpt_religion", pd.read_csv("results/goodreads_gpt_religion.csv", sep=','))
+    write_model_labels("goodreads_ngim_gender", pd.read_csv("results/goodreads_ngim_gender.csv", sep=','))
+    
+    
+
+    
