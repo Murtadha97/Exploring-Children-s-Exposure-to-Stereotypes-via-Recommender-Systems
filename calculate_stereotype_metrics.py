@@ -237,14 +237,12 @@ if __name__ == '__main__':
     global dataset_name
 
     # Load Genesis file
-    with open('C:\\Users\\murta\\OneDrive - Delft University of Technology\\Thesis-2023\\Gender Stereotype Detection Methods\\genesis.json', "r") as f:
+    with open('Gender Stereotype Detection Methods/genesis.json', "r") as f:
         content = json.loads(f.read())
 
     # Get the recommendation files
-    # rec_models_goodreads = get_recommender_models('input_recommendations/goodreads/*.tsv')
-    # rec_models_movielens = get_recommender_models('input_recommendations/movielens/*.tsv')
-    rec_models_goodreads = get_recommender_models('C:\\Users\\murta\\OneDrive - Delft University of Technology\\Thesis-2023\\Experiments/Results/goodreads/recs/*.tsv')
-    rec_models_movielens = get_recommender_models('C:\\Users\\murta\\OneDrive - Delft University of Technology\\Thesis-2023\\Experiments/Results/movielens/children/sideinfo/fold0/*.tsv')
+    rec_models_goodreads = get_recommender_models('input_recommendations/goodreads/*.tsv')
+    rec_models_movielens = get_recommender_models('input_recommendations/movielens/*.tsv')
 
     for model in content.keys():
 
@@ -260,16 +258,16 @@ if __name__ == '__main__':
             dataset_name = "Goodreads"
 
             columns = ["MostPop", "Random", "ItemKNN", "UserKNN", "BPRMF", "FunkSVD", "MF", "PMF",
-                       "PureSVD", "Slim", "ConvMF", "DeepFM", "NeuMF", "MultiVAE", "AMF"]
+                       "PureSVD", "Slim",  "DeepFM", "NeuMF", "MultiVAE"]
 
             models_df = calc_presence_st(rec_models_goodreads, stereotype_labels)
 
         else:
             dataset_name = "ML-children"
 
-            columns = ["MostPop", "Random", "ItemKNN", "UserKNN", "AttributeItemKNN", "AttributeUserKNN", "BPRMF",
-                       "FunkSVD", "MF", "MF2020", "PMF", "PureSVD", "Slim", "ConvMF", "DeepFM", "NeuMF", "MultiVAE",
-                       "AMF", "VSM"]
+            columns = ["MostPop", "Random", "ItemKNN", "UserKNN",  "BPRMF",
+                       "FunkSVD", "MF","PMF", "PureSVD", "Slim", "DeepFM", "NeuMF", "MultiVAE",
+                        "VSM"]
 
             models_df = calc_presence_st(rec_models_movielens, stereotype_labels)
 
