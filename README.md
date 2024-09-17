@@ -1,7 +1,7 @@
 # Exploring the Effect of Recommendation Algorithms on Exposing Children to Stereotypes
 
 This repository contains the code to reproduce the empirical exploration accomplished in the paper:
-**Mirror, Mirror: Exploring Stereotype Presence among Top-N Recommendations**, submitted to the TORS special issue for Recommender systems for good.
+**Mirror, Mirror: Exploring Stereotype Presence Among Top-N Recommendations Than May Reach Children**, submitted to the TORS special issue on Recommender Systems for Good.
 
 
 
