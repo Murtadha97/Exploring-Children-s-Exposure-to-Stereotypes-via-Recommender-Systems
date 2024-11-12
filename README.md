@@ -14,40 +14,60 @@ In order to reproduce the steps of the empirical exploration, the following tool
 - [Elliot](https://github.com/sisinflab/elliot)
 - [Movielens-1M](https://grouplens.org/datasets/movielens/1m/) dataset
 - [Goodreads](https://mengtingwan.github.io/data/goodreads.html#datasets) with "children" Genre
- (`goodreads_books_children.json.gz`)
+ (`goodreads_interactions_children.json.gz`)
+ - [TMDB 10000 Popular Movies](https://www.kaggle.com/datasets/muqarrishzaib/tmdb-10000-movies-dataset)
+ - Add the datasets to the `data` directory
+
 
 ## 1. Dataset Preprocessing
-Create the trainingsets for MovieLens (ML) and Goodreads (GR).
 
-- For GR, create a function that filters for items annotated with the "Children" Genre.
+- run `preprocess_data/read_goodreads.py`
+- run `preprocess_data/add_ML_descriptions.py`
 
-For both datasets, the remaining preprocessing steps are handled by the `config_file`s.
+
+For both datasets, the remaining preprocessing steps are handled by the `config_file`s and Elliot.
+
+
 
 ## 2. Run Elliot
+- Install Elliot in the main directory
+- Create conda environment
+```
+conda create --yes --name elliot-env python=3.8
+conda activate elliot-env
+cd Experiment_2 
+git clone https://github.com//sisinflab/elliot.git && cd elliot
+pip install --upgrade pip
+pip install -e . --verbose
+```
+
+- Add the rating data to elliot: `elliot/data/goodreads_ratings.tsv`. Movielens data should automatically be added by installing Elliot
 - Generate the recommendations with Elliot (`.tsv` files, see [docs](https://elliot.readthedocs.io/en/latest/guide/introduction.html)). 
 - See requirements_elliot.txt for the requirements and the files in the directory `config_file`s for the detailed configurations for Elliot. 
 
 ## 3. Create Evaluation Subset
-- For ML, filter the results of Elliot by users with age < 18 (ML-children)
+- Add recommendation directories to the directory `input_recommendations` as `input_recommendations/goodreads/*.tsv` and  `input_recommendations/movielens/*.tsv`
+- For ML, filter the results of Elliot by users with age < 18 (ML-children) by running `Result_Processing/filter_ML.py`
 
 
 ## 4. Predict stereotypes using the SDMs
-- Generate files that indicate whether a stereotype was found for each item in the recommendation list. For examples, see `Results/SDM`.
+- Generate files that indicate whether a stereotype was found for each item in the recommendation list.
 - Create stereotype predictions for all items using each SDM for each sterotype (NGIM only Gender)
 
 ### Preparation
-- Gather the item descriptions, which are included in the Goodreads dataset. For Movielens extract the item description from the [Movie-Database](https://www.themoviedb.org/)
-- Save the item descriptions as csv files with the column names: "id", "description" as
-1. Gender Stereotype Detection `Methods/data/ml_descriptions_processed.csv`
-2. Gender Stereotype Detection `Methods/data/gr_descriptions_processed.csv`
+- By using the `data_processing/create_subset.py` script save the item descriptions as csv files with the column names: "id", "description" as
+1. Gender Stereotype Detection `data/ml_descriptions_processed.csv`
+2. Gender Stereotype Detection `data/gr_descriptions_processed.csv`
 
 ### NGIM
 Prepare the item descriptions of books and movie Titles and compute and save the predicted scores by running the script: `Gender Stereotype Detection Methods/NGIM/ngim.py`
 
 ### BiasMeter
-- Apply [BiasMeter](https://github.com/YacineGACI/BiasMeter) to the Book and Item Description. 
-- If BiasMeter predicts a value > 0.7, classify the item as stereotypical
-- Save the predicted scores for each 'stereotype' as `Gender Stereotype Detection Methods/results/{dataset}_biasmeter_{stereotype}.csv`
+- Get [BiasMeter](https://github.com/YacineGACI/BiasMeter) and fit the models. Add all scripts and data to `Gender Stereotype Detection methods/BiasMeter` 
+- Tokenize MovieLens and Goodreads with `Gender Stereotype Detection Methods/BiasMeter/tokenize_biasmeter.py`
+- Run `Gender Stereotype Detection Methods/BiasMeter/biasmeter_dataset_classification.py` in order to analyze the individual sentences in the descriptions.
+- Run `Gender Stereotype Detection Methods/BiasMeter/calc_cf.py` in order to compute the Stanford Certainty Factor and save the predicted labels.
+
 
 ### ChatGPT
 - Get access to chat-gpt using OpenAI's [API parallel processor](https://github.com/openai/openai-cookbook/blob/main/examples/api_request_parallel_processor.py); we used the model gpt-3.5-turbo
@@ -67,11 +87,8 @@ Prepare the item descriptions of books and movie Titles and compute and save the
 ### Processing Results
 - Run `Gender Stereotype Detection Methods/Genesis.py` in order to summarize the results from the different metrics.
 
-## 5. Performance Evaluation
-- Evaluate the performance using results by Elliot. Consider that the performance for ML needs to be evaluated only for users whose age < 18
 
-## 6. Stereotype Evaluation
-- Place all recommendations for each dataset in a separate folder (see directory `input_recommendations`).
+## 5. Stereotype Evaluation
 - Run `calculate_stereotype_metrics.py` and make sure the path to the recommendations are correct (**lines 244 & 245**).
 - All the metrics for each RA will be stored as *.csv* files in "Results/SDM/..."
 - Run `plot_metrics.py` after the results are stored to plot the metrics.

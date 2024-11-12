@@ -2,7 +2,7 @@ import sys
 
 import pandas as pd
 import ast
-from Genesis import write_model_labels
+
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, TextClassificationPipeline
 import imdb
 from flair.data import Sentence
@@ -25,14 +25,14 @@ def label_cast(cast):
 
 import argparse
 if __name__ == '__main__':
-    # parser = argparse.ArgumentParser(description='Run NGIM stereotype detection model')
-    # parser.add_argument('--dataset', type=str, help='The dataset to analyse. Either ml or gr', required=True)
+    parser = argparse.ArgumentParser(description='Run NGIM stereotype detection model')
+    parser.add_argument('--dataset', type=str, help='The dataset to analyse. Either ml or gr', required=True)
 
-    # args = parser.parse_args()
-    # dataset = args.dataset
-    dataset = "gr" 
+    args = parser.parse_args()
+    dataset = args.dataset
+
     if dataset == "ml":
-        items_to_label = pd.read_csv('../data/ml-1m/movies.dat', sep='::', engine='python')
+        items_to_label = pd.read_csv('../../data/ml-1m/movies.dat', sep='::', engine='python')
         ia = imdb.IMDb()
         items_to_label['Cast'] = None
         for i, movie in items_to_label.iterrows():
@@ -55,7 +55,7 @@ if __name__ == '__main__':
             items_to_label.at[i, 'Cast'] = cast_names
 
     if dataset == "gr":
-        items_to_label = pd.read_csv('../data/goodreads/books.csv')
+        items_to_label = pd.read_csv('../../data/goodreads_descriptions.csv')
         
         items_to_label['Cast'] = None
         tagger = SequenceTagger.load('ner')

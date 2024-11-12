@@ -2,7 +2,7 @@ experiment:
   dataset: goodreads_fold2
   data_config:
     strategy: dataset
-    dataset_path: ../Datasets/goodreads_ratings.tsv
+    dataset_path: ../../data/goodreads_ratings.tsv
   prefiltering:
     - strategy: global_threshold
       threshold: 4
