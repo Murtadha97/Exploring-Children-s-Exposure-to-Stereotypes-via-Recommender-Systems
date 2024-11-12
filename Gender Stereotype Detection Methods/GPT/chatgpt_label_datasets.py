@@ -73,11 +73,11 @@ if __name__ == '__main__':
     
     if dataset == 'ml':
         filename_cp = f"data/jobs_ml{gpt_version}.jsonl"
-        data = pd.read_csv("data/ml_descriptions_processed.csv")
+        data = pd.read_csv("../../data/ml_descriptions_processed.csv")
         type_of_item = "movies"
     if dataset == 'gr':
         filename_cp = f"data/jobs_gr{gpt_version}_"
-        data = pd.read_csv("../data/gr_descriptions_processed.csv")
+        data = pd.read_csv("../../data/gr_descriptions_processed.csv")
         type_of_item = "books"
         
     create_input_file(data, filename_cp, type_of_item)

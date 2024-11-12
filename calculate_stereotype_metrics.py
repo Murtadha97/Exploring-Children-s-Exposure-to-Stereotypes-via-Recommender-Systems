@@ -242,7 +242,7 @@ if __name__ == '__main__':
 
     # Get the recommendation files
     rec_models_goodreads = get_recommender_models('input_recommendations/goodreads/*.tsv')
-    rec_models_movielens = get_recommender_models('input_recommendations/movielens/*.tsv')
+    rec_models_movielens = get_recommender_models('input_recommendations/movielens_child/*.tsv')
 
     for model in content.keys():
 
