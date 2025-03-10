@@ -13,8 +13,8 @@ Our results indicate that no algorithm has a consistent tendency towards recomme
 Outcomes from this work underscore the potential risks that RAs pose to children in perpetuating and reinforcing harmful stereotypes—this prompts reflections on their implications for the design and evaluation of recommender systems.
 
 ## Citation
-Robin Ungruh, Murtadha Al Nahadi, and Maria Soledad Pera. 2025. Mirror, Mirror: Exploring Stereotype Presence Among Top-N Recommendations That May Reach Children. _ACM Trans. Recomm. Syst._ 1, 1, Article 1
-(January 2025), 29 pages. https://doi.org/10.1145/3721987
+Robin Ungruh, Murtadha Al Nahadi, and Maria Soledad Pera. 2025. Mirror, Mirror: Exploring Stereotype Presence Among Top-N Recommendations That May Reach Children. _ACM Transactions on Recommender Systems_
+(March 2025). https://doi.org/10.1145/3721987
 
 
 # Reproducibility Code
